@@ -64,8 +64,9 @@ def main():
     plt.ylabel('Training Loss')
     plt.xticks(np.arange(num_epochs))
     plt.title('MNIST Logistic Regression')
+    plt.xticks(np.arange(0, num_epochs + 1, 5))
     plt.legend()
-    plt.savefig('out.png')
+    plt.savefig('out.png', dpi=300)
     plt.show()
 
 

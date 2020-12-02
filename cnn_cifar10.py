@@ -9,16 +9,6 @@ from torchvision import datasets, models, transforms
 from my_adam_optimizer import MyAdamOptimizer
 
 
-class PrintLayer(nn.Module):
-    def __init__(self):
-        super(PrintLayer, self).__init__()
-
-    def forward(self, x):
-        # Do your print / debug stuff here
-        print(x.shape)
-        return x
-
-
 def main():
     num_epochs = 30
 
@@ -38,8 +28,8 @@ def main():
     for name in ['Adam', 'SGDNesterov', 'AdaGrad']:
         print('Starting', name)
 
-        # 2 hidden layer fcnn
-        model = nn.Sequential(nn.Dropout(0),
+        # CNN
+        model = nn.Sequential(nn.Dropout(.1),
                               nn.Conv2d(3, 64, 5, padding=2), nn.ReLU(True),
                               nn.MaxPool2d(3, stride=2),
                               nn.Conv2d(64, 64, 5, padding=2), nn.ReLU(True),
@@ -48,7 +38,7 @@ def main():
                               nn.MaxPool2d(3, stride=2),
                               nn.Flatten(),
                               nn.Linear(1152, 1000), nn.ReLU(True),
-                              nn.Dropout(0),
+                              nn.Dropout(.1),
                               nn.Linear(1000, 10))
         model.cuda()
 
@@ -83,9 +73,10 @@ def main():
     plt.xlabel('Epoch')
     plt.ylabel('Training Loss')
     plt.xticks(np.arange(num_epochs))
-    plt.title('MNIST Logistic Regression')
+    plt.title('CIFAR-10 CNN')
+    plt.xticks(np.arange(0, num_epochs + 1, 5))
     plt.legend()
-    plt.savefig('out.png')
+    plt.savefig('out.png', dpi=300)
     plt.show()
 
 

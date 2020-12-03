@@ -28,7 +28,7 @@ def main():
     for name in ['Adam', 'SGDNesterov', 'AdaGrad']:
         print('Starting', name)
 
-        # CNN
+        # CNN from paper
         model = nn.Sequential(nn.Dropout(.1),
                               nn.Conv2d(3, 64, 5, padding=2), nn.ReLU(True),
                               nn.MaxPool2d(3, stride=2),
@@ -52,6 +52,7 @@ def main():
         elif name == 'AdaGrad':
             optimizer = optim.Adagrad(model.parameters(), weight_decay=0, lr=0.0015)
 
+        # Train
         for i in tqdm(range(num_epochs)):
             loss = 0
             for x, y in data_loader:

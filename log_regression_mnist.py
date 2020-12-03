@@ -42,6 +42,7 @@ def main():
         elif name == 'AdaGrad':
             optimizer = optim.Adagrad(model.parameters(), weight_decay=0.01, lr=0.015)
 
+        # Train
         for i in tqdm(range(num_epochs)):
             loss = 0
             for x, y in data_loader:
@@ -60,6 +61,7 @@ def main():
         plt.plot(np.arange(num_epochs), results[name], label=name, c=colors[name], linewidth=1)
         pickle.dump(results[name], open(name+'.p', 'wb'))
 
+    # Plot
     plt.xlabel('Epoch')
     plt.ylabel('Training Loss')
     plt.xticks(np.arange(num_epochs))

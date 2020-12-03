@@ -46,7 +46,6 @@ def main():
                                      transform=transform,
                                      target_transform=target_transform)
 
-    print(len(train_data))
     data_loader = torch.utils.data.DataLoader(train_data,
                                               batch_size=3,
                                               shuffle=True,
@@ -71,6 +70,7 @@ def main():
         elif name == 'AdaGrad':
             optimizer = optim.Adagrad(model.parameters(), weight_decay=0.01, lr=0.001)
 
+        # Train
         for i in tqdm(range(num_epochs)):
             loss = 0
             for x, y in tqdm(data_loader):

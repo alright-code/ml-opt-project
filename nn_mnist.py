@@ -46,6 +46,7 @@ def main():
         elif name == 'AdaGrad':
             optimizer = optim.Adagrad(model.parameters(), weight_decay=0.01, lr=0.005)
 
+        # Train
         for i in tqdm(range(num_epochs)):
             loss = 0
             for x, y in data_loader:

@@ -15,6 +15,9 @@ class ToTensor(nn.Module):
         self.map_to_train_classes = {x.id: x.train_id for x in datasets.Cityscapes.classes}
 
     def __call__(self, target):
+        '''
+        Convert to tensor, add undefined class.
+        '''
         target = torch.as_tensor(np.array(target), dtype=torch.int64)
         mask = torch.zeros_like(target)
         for id, train_id in self.map_to_train_classes.items():
@@ -68,21 +71,21 @@ def main():
         elif name == 'AdaGrad':
             optimizer = optim.Adagrad(model.parameters(), weight_decay=0.01, lr=0.001)
 
-        #for i in tqdm(range(num_epochs)):
-        #    loss = 0
-        #    for x, y in tqdm(data_loader):
-        #        x = x.cuda().type(torch.float32)
-        #        y = y.cuda()
-        #        optimizer.zero_grad()
-        #        y_pred = model(x)['out']
-        #        train_loss = criterion(y_pred, y)
-        #        train_loss.backward()
-        #        optimizer.step()
-        #        loss += train_loss.item()
-        #    print(loss/len(data_loader))
-        #    results[name].append(loss/len(data_loader))
-        results[name] = pickle.load(open('results/cityscapes/' + name + '.p', 'rb'))
-        #torch.save(model, name+'.pt')
+        for i in tqdm(range(num_epochs)):
+            loss = 0
+            for x, y in tqdm(data_loader):
+                x = x.cuda().type(torch.float32)
+                y = y.cuda()
+                optimizer.zero_grad()
+                y_pred = model(x)['out']
+                train_loss = criterion(y_pred, y)
+                train_loss.backward()
+                optimizer.step()
+                loss += train_loss.item()
+            print(loss/len(data_loader))
+            results[name].append(loss/len(data_loader))
+        #results[name] = pickle.load(open('results/cityscapes/' + name + '.p', 'rb'))
+        torch.save(model, name+'.pt')
         plt.plot(np.arange(num_epochs), results[name], label=name, c=colors[name], linewidth=1)
         pickle.dump(results[name], open(name+'.p', 'wb'))
 
